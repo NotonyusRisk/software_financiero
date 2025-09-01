@@ -1,25 +1,37 @@
+import { Button, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { Meta, crearMeta } from '../api/metas';
-import { Button, Stack, TextField } from '@mui/material';
+import { crearMeta } from '../api/metas';
 
-export default function FormMeta({ onSuccess }: { onSuccess: () => void }) {
-  const { register, handleSubmit, reset } = useForm<Meta>();
+interface MetaData {
+  name: string;
+  target_amount: number;
+  current_amount: number;
+  deadline: string;
+}
 
-  const onSubmit = async (data: Meta) => {
+export default function FormMeta() {
+  const { register, handleSubmit, reset } = useForm<MetaData>();
+
+  const onSubmit = async (data: MetaData) => {
     await crearMeta(data);
+    alert('Meta registrada');
     reset();
-    onSuccess();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2}>
-        <TextField label="Nombre" {...register('name')} required />
-        <TextField label="Monto objetivo" type="number" {...register('target_amount')} required />
-        <TextField label="Fecha límite" type="date" {...register('deadline')} required InputLabelProps={{ shrink: true }} />
-
-        <Button variant="contained" type="submit">Guardar Meta</Button>
-      </Stack>
+      <TextField label="Nombre" fullWidth margin="normal" {...register('name')} />
+      <TextField label="Meta total (COP)" type="number" fullWidth margin="normal" {...register('target_amount')} />
+      <TextField label="Cantidad actual" type="number" fullWidth margin="normal" {...register('current_amount')} />
+      <TextField
+        label="Fecha límite"
+        type="date"
+        fullWidth
+        margin="normal"
+        InputLabelProps={{ shrink: true }}
+        {...register('deadline')}
+      />
+      <Button fullWidth variant="contained" type="submit">Guardar</Button>
     </form>
   );
 }

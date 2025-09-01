@@ -5,10 +5,10 @@ export const loginUser = async (email: string, password: string) => {
   return res.data;
 };
 
-export const registerUser = async (data: {
-  name: string;
-  email: string;
-  password: string;
+export const registerUser = async (email: string, password: string, data: {
+    name: string;
+    email: string;
+    password: string;
 }) => {
   const res = await api.post('/auth/register', data);
   return res.data;

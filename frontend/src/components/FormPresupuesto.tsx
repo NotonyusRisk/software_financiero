@@ -1,25 +1,28 @@
+import { Button, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { Presupuesto, crearPresupuesto } from '../api/presupuestos';
-import { Button, Stack, TextField } from '@mui/material';
+import { crearPresupuesto } from '../api/presupuestos';
 
-export default function FormPresupuesto({ onSuccess }: { onSuccess: () => void }) {
-  const { register, handleSubmit, reset } = useForm<Presupuesto>();
+interface PresupuestoData {
+  month: number;
+  year: number;
+  amount: number;
+}
 
-  const onSubmit = async (data: Presupuesto) => {
+export default function FormPresupuesto() {
+  const { register, handleSubmit, reset } = useForm<PresupuestoData>();
+
+  const onSubmit = async (data: PresupuestoData) => {
     await crearPresupuesto(data);
+    alert('Presupuesto creado');
     reset();
-    onSuccess();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2}>
-        <TextField label="Monto mensual" type="number" {...register('amount')} required />
-        <TextField label="Mes" type="number" {...register('month')} required inputProps={{ min: 1, max: 12 }} />
-        <TextField label="Año" type="number" {...register('year')} required />
-
-        <Button variant="contained" type="submit">Guardar Presupuesto</Button>
-      </Stack>
+      <TextField label="Mes (número)" type="number" fullWidth margin="normal" {...register('month')} />
+      <TextField label="Año" type="number" fullWidth margin="normal" {...register('year')} />
+      <TextField label="Presupuesto (COP)" type="number" fullWidth margin="normal" {...register('amount')} />
+      <Button fullWidth variant="contained" type="submit">Guardar</Button>
     </form>
   );
 }

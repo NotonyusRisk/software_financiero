@@ -1,28 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Presupuesto, obtenerPresupuestos } from '../api/presupuestos';
+import { Box, Typography, Divider } from '@mui/material';
 import FormPresupuesto from '../components/FormPresupuesto';
-import { Typography, Divider } from '@mui/material';
+import Sidebar from '../components/Sidebar';
 
-export default function VistaPresupuesto() {
-  const [presupuestos, setPresupuestos] = useState<Presupuesto[]>([]);
-
-  const cargar = async () => {
-    const res = await obtenerPresupuestos();
-    setPresupuestos(res);
-  };
-
-  useEffect(() => { cargar(); }, []);
-
+export default function Presupuesto() {
   return (
-    <div>
-      <Typography variant="h5" gutterBottom>Presupuesto mensual</Typography>
-      <FormPresupuesto onSuccess={cargar} />
-      <Divider sx={{ my: 3 }} />
-      {presupuestos.map((p) => (
-        <p key={p.id}>
-          {p.month}/{p.year}: ${p.amount}
-        </p>
-      ))}
-    </div>
+    <Box p={3}>
+      <Sidebar />
+      <Typography variant="h4">Registrar Presupuesto</Typography>
+      <Divider sx={{ my: 2 }} />
+      <FormPresupuesto />
+    </Box>
   );
 }

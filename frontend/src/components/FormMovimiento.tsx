@@ -1,30 +1,35 @@
+import { Button, MenuItem, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { Movimiento, crearMovimiento } from '../api/movimientos';
-import { Button, MenuItem, TextField, Stack } from '@mui/material';
+import { crearMovimiento } from '../api/movimientos';
 
-export default function FormMovimiento({ onSuccess }: { onSuccess: () => void }) {
-  const { register, handleSubmit, reset } = useForm<Movimiento>();
+interface MovimientoData {
+  type: 'ingreso' | 'egreso';
+  category: string;
+  amount: number;
+  date: string;
+  description: string;
+}
 
-  const onSubmit = async (data: Movimiento) => {
+export default function FormMovimiento() {
+  const { register, handleSubmit, reset } = useForm<MovimientoData>();
+
+  const onSubmit = async (data: MovimientoData) => {
     await crearMovimiento(data);
+    alert('Movimiento registrado');
     reset();
-    onSuccess();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2}>
-        <TextField select label="Tipo" {...register('type')} required>
-          <MenuItem value="ingreso">Ingreso</MenuItem>
-          <MenuItem value="egreso">Egreso</MenuItem>
-        </TextField>
-
-        <TextField label="Monto" type="number" {...register('amount')} required />
-        <TextField label="Descripción" {...register('description')} required />
-        <TextField label="Fecha" type="date" {...register('date')} required InputLabelProps={{ shrink: true }} />
-
-        <Button variant="contained" type="submit">Agregar Movimiento</Button>
-      </Stack>
+      <TextField select label="Tipo" fullWidth margin="normal" {...register('type')}>
+        <MenuItem value="ingreso">Ingreso</MenuItem>
+        <MenuItem value="egreso">Egreso</MenuItem>
+      </TextField>
+      <TextField label="Categoría" fullWidth margin="normal" {...register('category')} />
+      <TextField label="Monto" type="number" fullWidth margin="normal" {...register('amount')} />
+      <TextField label="Fecha" type="date" fullWidth margin="normal" InputLabelProps={{ shrink: true }} {...register('date')} />
+      <TextField label="Descripción" fullWidth margin="normal" {...register('description')} />
+      <Button fullWidth type="submit" variant="contained">Guardar</Button>
     </form>
   );
 }
