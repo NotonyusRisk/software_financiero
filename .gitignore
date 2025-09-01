@@ -1,4 +1,26 @@
-./backend/node_modules
-./frontend/node_modules
-./backend/.env
-./frontend/.env
+# Node.js dependencies
+backend/node_modules/
+frontend/node_modules/
+
+# TypeScript build output
+backend/dist/
+frontend/dist/
+
+# Environment variables
+backend/.env
+frontend/.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor-specific files
+.vscode/
+.idea/
+.DS_Store
+
+# Docker volumes (opcional, por si montas archivos dentro de contenedores)
+pgdata/
+
+# OS junk files
+Thumbs.db
